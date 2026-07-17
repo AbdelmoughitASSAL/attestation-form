@@ -445,3 +445,32 @@ const CONFIG = {
 
   showStep(currentStep);
 })();
+
+// ---------------------------------------------------------------------------
+// Iframe embedding support: report our height to the parent page (e.g. a
+// WordPress site embedding this form) so it can resize the iframe and avoid
+// an inner scrollbar. Harmless if the page isn't embedded in an iframe.
+// ---------------------------------------------------------------------------
+(function () {
+  if (window.parent === window) return;
+
+  let lastHeight = 0;
+  function reportHeight() {
+    const height = document.documentElement.scrollHeight;
+    if (height === lastHeight) return;
+    lastHeight = height;
+    window.parent.postMessage({ type: "attestation-form-height", height }, "*");
+  }
+
+  // ResizeObserver gives near-instant updates; the interval is a defensive
+  // fallback so the iframe still resizes correctly even if a browser drops
+  // the observer (e.g. no persistent reference kept elsewhere).
+  const resizeObserver = new ResizeObserver(reportHeight);
+  resizeObserver.observe(document.body);
+  window.__attestationResizeObserver = resizeObserver;
+
+  window.addEventListener("load", reportHeight);
+  document.addEventListener("formlanguagechange", reportHeight);
+  setInterval(reportHeight, 400);
+  reportHeight();
+})();
