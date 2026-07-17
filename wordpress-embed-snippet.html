@@ -30,13 +30,13 @@ body::before {
 
 <div style="max-width:900px;margin:40px auto;padding:0 16px;position:relative;z-index:1;">
   <iframe id="attestationFormFrame"
-    src="https://abdelmoughitassal.github.io/attestation-form/"
+    src="https://centreeuropeen.com/attestation/"
     style="width:100%;border:none;display:block;"
     title="Formulaire de demande d'attestation"></iframe>
 </div>
 <script>
 window.addEventListener('message', function (e) {
-  if (e.origin !== 'https://abdelmoughitassal.github.io') return;
+  if (e.origin !== 'https://centreeuropeen.com') return;
   if (e.data && e.data.type === 'attestation-form-height') {
     var frame = document.getElementById('attestationFormFrame');
     if (frame) frame.style.height = e.data.height + 'px';
