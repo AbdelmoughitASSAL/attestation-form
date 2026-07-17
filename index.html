@@ -45,26 +45,63 @@
     <ol class="steps" id="steps" aria-label="Étapes du formulaire">
       <li class="step active" data-step="1">
         <span class="step-dot">1</span>
-        <span class="step-label" data-i18n="step1">Informations</span>
+        <span class="step-label" data-i18n="step0">École</span>
       </li>
       <li class="step" data-step="2">
         <span class="step-dot">2</span>
-        <span class="step-label" data-i18n="step2">Attestation</span>
+        <span class="step-label" data-i18n="step1">Informations</span>
       </li>
       <li class="step" data-step="3">
         <span class="step-dot">3</span>
-        <span class="step-label" data-i18n="step3">Document</span>
+        <span class="step-label" data-i18n="step2">Attestation</span>
       </li>
       <li class="step" data-step="4">
         <span class="step-dot">4</span>
+        <span class="step-label" data-i18n="step3">Document</span>
+      </li>
+      <li class="step" data-step="5">
+        <span class="step-dot">5</span>
         <span class="step-label" data-i18n="step4">Envoi</span>
       </li>
     </ol>
 
     <form id="attestationForm" novalidate>
 
-      <!-- STEP 1 : PERSONAL INFO -->
+      <!-- STEP 0 : SCHOOL SELECTION -->
       <section class="panel" data-panel="1">
+        <h2 class="panel-title" data-i18n="step0_heading">Choisissez votre établissement</h2>
+
+        <div class="field">
+          <label><span data-i18n="label_ecole">Établissement</span> <span class="req">*</span></label>
+          <div class="option-cards" data-group="ecole">
+            <label class="option-card">
+              <input type="radio" name="ecole" value="EELI - Centre des Langues" required>
+              <span class="option-card-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3L1 9l11 6 9-4.91V17"/><path d="M5 10.5V16c0 1.5 3 3 7 3s7-1.5 7-3v-5.5"/></svg>
+              </span>
+              <span class="option-card-text" data-i18n="opt_eeli">EELI - Centre des Langues</span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="ecole" value="EEMCI" required>
+              <span class="option-card-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3L1 9l11 6 9-4.91V17"/><path d="M5 10.5V16c0 1.5 3 3 7 3s7-1.5 7-3v-5.5"/></svg>
+              </span>
+              <span class="option-card-text" data-i18n="opt_eemci">EEMCI</span>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="ecole" value="EEMSI" required>
+              <span class="option-card-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3L1 9l11 6 9-4.91V17"/><path d="M5 10.5V16c0 1.5 3 3 7 3s7-1.5 7-3v-5.5"/></svg>
+              </span>
+              <span class="option-card-text" data-i18n="opt_eemsi">EEMSI</span>
+            </label>
+          </div>
+          <p class="error" data-error-for="ecole"></p>
+        </div>
+      </section>
+
+      <!-- STEP 1 : PERSONAL INFO -->
+      <section class="panel" data-panel="2" hidden>
         <h2 class="panel-title" data-i18n="step1_heading">Vos informations personnelles</h2>
 
         <div class="field">
@@ -95,97 +132,198 @@
       </section>
 
       <!-- STEP 2 : ATTESTATION DETAILS -->
-      <section class="panel" data-panel="2" hidden>
+      <section class="panel" data-panel="3" hidden>
         <h2 class="panel-title" data-i18n="step2_heading">Détails de l'attestation</h2>
 
-        <div class="field">
-          <label><span data-i18n="label_typeAttestation">Type d'attestation</span> <span class="req">*</span></label>
-          <div class="option-cards" data-group="typeAttestation">
-            <label class="option-card">
-              <input type="radio" name="typeAttestation" value="Attestation d'inscription" required>
-              <span class="option-card-icon">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 12v6M9 15h6"/></svg>
-              </span>
-              <span class="option-card-text" data-i18n="opt_inscription">Attestation d'inscription</span>
-            </label>
-            <label class="option-card">
-              <input type="radio" name="typeAttestation" value="Attestation de scolarité" required>
-              <span class="option-card-icon">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9 15 2 2 4-4"/></svg>
-              </span>
-              <span class="option-card-text" data-i18n="opt_scolarite">Attestation de scolarité</span>
-            </label>
-            <label class="option-card">
-              <input type="radio" name="typeAttestation" value="Attestation de fin de formation" required>
-              <span class="option-card-icon">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><circle cx="12" cy="14" r="2.4"/><path d="m10.3 16 -.5 3.2 2.2-1.2 2.2 1.2-.5-3.2"/></svg>
-              </span>
-              <span class="option-card-text" data-i18n="opt_finFormation">Attestation de fin de formation</span>
-            </label>
-          </div>
-          <p class="error" data-error-for="typeAttestation"></p>
-        </div>
-
-        <div class="field">
-          <label><span data-i18n="label_langue">Langue</span> <span class="req">*</span></label>
-          <div class="pill-group" data-group="langue">
-            <label class="pill"><input type="radio" name="langue" value="Allemande" required><span data-i18n="lang_allemande">Allemande</span></label>
-            <label class="pill"><input type="radio" name="langue" value="Anglaise" required><span data-i18n="lang_anglaise">Anglaise</span></label>
-            <label class="pill"><input type="radio" name="langue" value="Espagnole" required><span data-i18n="lang_espagnole">Espagnole</span></label>
-            <label class="pill"><input type="radio" name="langue" value="Française" required><span data-i18n="lang_francaise">Française</span></label>
-            <label class="pill"><input type="radio" name="langue" value="Italienne" required><span data-i18n="lang_italienne">Italienne</span></label>
-            <label class="pill"><input type="radio" name="langue" value="Néerlandaise" required><span data-i18n="lang_neerlandaise">Néerlandaise</span></label>
-            <label class="pill"><input type="radio" name="langue" value="Arabe" required><span data-i18n="lang_arabe">Arabe</span></label>
-          </div>
-          <p class="error" data-error-for="langue"></p>
-        </div>
-
-        <div class="grid-2">
+        <!-- EELI variant -->
+        <div class="school-variant" data-school-variant="EELI - Centre des Langues">
           <div class="field">
-            <label for="horaire"><span data-i18n="label_horaire">Horaire du cours</span> <span class="req">*</span></label>
-            <select id="horaire" name="horaire" required>
-              <option value="" disabled selected data-i18n="horaire_placeholder">Choisir un horaire…</option>
-              <optgroup label="Matin" data-i18n-label="horaire_group_matin">
-                <option value="Matin 8h30-10h30" data-i18n="horaire_1">Matin 8h30-10h30</option>
-                <option value="Cours Accélérés 9h30-12h30" data-i18n="horaire_2">Cours Accélérés 9h30-12h30</option>
-                <option value="Matin 10h30-12h30" data-i18n="horaire_3">Matin 10h30-12h30</option>
-              </optgroup>
-              <optgroup label="Après-midi" data-i18n-label="horaire_group_apresmidi">
-                <option value="Ap Midi 14h30-16h30" data-i18n="horaire_4">Ap Midi 14h30-16h30</option>
-                <option value="Cours Accélérés 15h-18h" data-i18n="horaire_5">Cours Accélérés 15h-18h</option>
-                <option value="Ap Midi 16h30-18h30" data-i18n="horaire_6">Ap Midi 16h30-18h30</option>
-                <option value="Cours du jour 16h30-18h" data-i18n="horaire_7">Cours du jour 16h30-18h</option>
-              </optgroup>
-              <optgroup label="Soir" data-i18n-label="horaire_group_soir">
-                <option value="Cours Accélérés 18h-21h" data-i18n="horaire_8">Cours Accélérés 18h-21h</option>
-                <option value="Cours du soir 18h30-20h" data-i18n="horaire_9">Cours du soir 18h30-20h</option>
-                <option value="Soir 19h-21h" data-i18n="horaire_10">Soir 19h-21h</option>
-              </optgroup>
-              <optgroup label="Week-end" data-i18n-label="horaire_group_weekend">
-                <option value="Samedi Ap Midi 15h-18h" data-i18n="horaire_11">Samedi Ap Midi 15h-18h</option>
-                <option value="Dimanche Matin 10h-13h" data-i18n="horaire_12">Dimanche Matin 10h-13h</option>
-              </optgroup>
-            </select>
-            <p class="error" data-error-for="horaire"></p>
+            <label><span data-i18n="label_typeAttestation">Type d'attestation</span> <span class="req">*</span></label>
+            <div class="option-cards" data-group="typeAttestation">
+              <label class="option-card">
+                <input type="radio" name="typeAttestation" value="Attestation d'inscription">
+                <span class="option-card-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 12v6M9 15h6"/></svg>
+                </span>
+                <span class="option-card-text" data-i18n="opt_inscription">Attestation d'inscription</span>
+              </label>
+              <label class="option-card">
+                <input type="radio" name="typeAttestation" value="Attestation de scolarité">
+                <span class="option-card-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9 15 2 2 4-4"/></svg>
+                </span>
+                <span class="option-card-text" data-i18n="opt_scolarite">Attestation de scolarité</span>
+              </label>
+              <label class="option-card">
+                <input type="radio" name="typeAttestation" value="Attestation de fin de formation">
+                <span class="option-card-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><circle cx="12" cy="14" r="2.4"/><path d="m10.3 16 -.5 3.2 2.2-1.2 2.2 1.2-.5-3.2"/></svg>
+                </span>
+                <span class="option-card-text" data-i18n="opt_finFormation">Attestation de fin de formation</span>
+              </label>
+            </div>
+            <p class="error" data-error-for="typeAttestation"></p>
           </div>
 
           <div class="field">
-            <label for="anneeFormation"><span data-i18n="label_anneeFormation">Année de formation</span> <span class="req">*</span></label>
-            <select id="anneeFormation" name="anneeFormation" required>
-              <option value="" disabled selected data-i18n="annee_placeholder">Choisir une année…</option>
-            </select>
-            <p class="error" data-error-for="anneeFormation"></p>
+            <label><span data-i18n="label_langue">Langue</span> <span class="req">*</span></label>
+            <div class="pill-group" data-group="langue">
+              <label class="pill"><input type="radio" name="langue" value="Allemande"><span data-i18n="lang_allemande">Allemande</span></label>
+              <label class="pill"><input type="radio" name="langue" value="Anglaise"><span data-i18n="lang_anglaise">Anglaise</span></label>
+              <label class="pill"><input type="radio" name="langue" value="Espagnole"><span data-i18n="lang_espagnole">Espagnole</span></label>
+              <label class="pill"><input type="radio" name="langue" value="Française"><span data-i18n="lang_francaise">Française</span></label>
+              <label class="pill"><input type="radio" name="langue" value="Italienne"><span data-i18n="lang_italienne">Italienne</span></label>
+              <label class="pill"><input type="radio" name="langue" value="Néerlandaise"><span data-i18n="lang_neerlandaise">Néerlandaise</span></label>
+              <label class="pill"><input type="radio" name="langue" value="Arabe"><span data-i18n="lang_arabe">Arabe</span></label>
+            </div>
+            <p class="error" data-error-for="langue"></p>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label for="horaire"><span data-i18n="label_horaire">Horaire du cours</span> <span class="req">*</span></label>
+              <select id="horaire" name="horaire">
+                <option value="" disabled selected data-i18n="horaire_placeholder">Choisir un horaire…</option>
+                <optgroup label="Matin" data-i18n-label="horaire_group_matin">
+                  <option value="Matin 8h30-10h30" data-i18n="horaire_1">Matin 8h30-10h30</option>
+                  <option value="Cours Accélérés 9h30-12h30" data-i18n="horaire_2">Cours Accélérés 9h30-12h30</option>
+                  <option value="Matin 10h30-12h30" data-i18n="horaire_3">Matin 10h30-12h30</option>
+                </optgroup>
+                <optgroup label="Après-midi" data-i18n-label="horaire_group_apresmidi">
+                  <option value="Ap Midi 14h30-16h30" data-i18n="horaire_4">Ap Midi 14h30-16h30</option>
+                  <option value="Cours Accélérés 15h-18h" data-i18n="horaire_5">Cours Accélérés 15h-18h</option>
+                  <option value="Ap Midi 16h30-18h30" data-i18n="horaire_6">Ap Midi 16h30-18h30</option>
+                  <option value="Cours du jour 16h30-18h" data-i18n="horaire_7">Cours du jour 16h30-18h</option>
+                </optgroup>
+                <optgroup label="Soir" data-i18n-label="horaire_group_soir">
+                  <option value="Cours Accélérés 18h-21h" data-i18n="horaire_8">Cours Accélérés 18h-21h</option>
+                  <option value="Cours du soir 18h30-20h" data-i18n="horaire_9">Cours du soir 18h30-20h</option>
+                  <option value="Soir 19h-21h" data-i18n="horaire_10">Soir 19h-21h</option>
+                </optgroup>
+                <optgroup label="Week-end" data-i18n-label="horaire_group_weekend">
+                  <option value="Samedi Ap Midi 15h-18h" data-i18n="horaire_11">Samedi Ap Midi 15h-18h</option>
+                  <option value="Dimanche Matin 10h-13h" data-i18n="horaire_12">Dimanche Matin 10h-13h</option>
+                </optgroup>
+              </select>
+              <p class="error" data-error-for="horaire"></p>
+            </div>
+
+            <div class="field">
+              <label for="anneeFormation"><span data-i18n="label_anneeFormation">Année de formation</span> <span class="req">*</span></label>
+              <select id="anneeFormation" name="anneeFormation">
+                <option value="" disabled selected data-i18n="annee_placeholder">Choisir une année…</option>
+              </select>
+              <p class="error" data-error-for="anneeFormation"></p>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="nomProf"><span data-i18n="label_nomProf">Nom du professeur</span> <span class="optional" data-i18n="optional_text">(facultatif)</span></label>
+            <input type="text" id="nomProf" name="nomProf" data-i18n-placeholder="placeholder_nomProf" placeholder="ex. M. Bennani">
           </div>
         </div>
 
-        <div class="field">
-          <label for="nomProf"><span data-i18n="label_nomProf">Nom du professeur</span> <span class="optional" data-i18n="optional_text">(facultatif)</span></label>
-          <input type="text" id="nomProf" name="nomProf" data-i18n-placeholder="placeholder_nomProf" placeholder="ex. M. Bennani">
+        <!-- EEMCI variant -->
+        <div class="school-variant" data-school-variant="EEMCI" hidden>
+          <div class="field">
+            <label><span data-i18n="label_typeAttestation">Type d'attestation</span> <span class="req">*</span></label>
+            <div class="option-cards" data-group="typeAttestationEemci">
+              <label class="option-card">
+                <input type="radio" name="typeAttestation" value="Attestation d'inscription">
+                <span class="option-card-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 12v6M9 15h6"/></svg>
+                </span>
+                <span class="option-card-text" data-i18n="opt_inscription">Attestation d'inscription</span>
+              </label>
+              <label class="option-card">
+                <input type="radio" name="typeAttestation" value="Attestation de scolarité">
+                <span class="option-card-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9 15 2 2 4-4"/></svg>
+                </span>
+                <span class="option-card-text" data-i18n="opt_scolarite">Attestation de scolarité</span>
+              </label>
+              <label class="option-card">
+                <input type="radio" name="typeAttestation" value="Attestation homologuée">
+                <span class="option-card-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9 12 2 2 4-4"/></svg>
+                </span>
+                <span class="option-card-text" data-i18n="opt_homologuee">Attestation homologuée</span>
+              </label>
+              <label class="option-card">
+                <input type="radio" name="typeAttestation" value="Attestation de réussite">
+                <span class="option-card-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><circle cx="12" cy="14" r="2.4"/><path d="m10.3 16 -.5 3.2 2.2-1.2 2.2 1.2-.5-3.2"/></svg>
+                </span>
+                <span class="option-card-text" data-i18n="opt_reussite">Attestation de réussite</span>
+              </label>
+            </div>
+            <p class="error" data-error-for="typeAttestationEemci"></p>
+          </div>
+
+          <div class="field">
+            <label for="motif"><span data-i18n="label_motif">Motif de la demande</span> <span class="req">*</span></label>
+            <input type="text" id="motif" name="motif" data-i18n-placeholder="placeholder_motif" placeholder="ex. Poursuite d'études à l'étranger">
+            <p class="error" data-error-for="motif"></p>
+          </div>
+
+          <div class="field">
+            <label for="filiere"><span data-i18n="label_filiere">Filière</span> <span class="req">*</span></label>
+            <select id="filiere" name="filiere">
+              <option value="" disabled selected data-i18n="filiere_placeholder">Choisir une filière…</option>
+              <optgroup label="Filières Bac+2" data-i18n-label="filiere_group_bac2">
+                <option value="Gestion Informatisée" data-i18n="filiere_1">Gestion Informatisée</option>
+                <option value="Action Commerciale et Marketing" data-i18n="filiere_2">Action Commerciale et Marketing</option>
+                <option value="Réception d'Hôtel" data-i18n="filiere_3">Réception d'Hôtel</option>
+                <option value="Gestion des Entreprises" data-i18n="filiere_4">Gestion des Entreprises</option>
+                <option value="Commerce International" data-i18n="filiere_5">Commerce International</option>
+                <option value="Financier Comptable" data-i18n="filiere_6">Financier Comptable</option>
+                <option value="Développement Informatique" data-i18n="filiere_7">Développement Informatique</option>
+                <option value="Systèmes et Réseaux Informatiques" data-i18n="filiere_8">Systèmes et Réseaux Informatiques</option>
+                <option value="Gestion Hôtelière" data-i18n="filiere_9">Gestion Hôtelière</option>
+                <option value="Cyber Sécurité" data-i18n="filiere_10">Cyber Sécurité</option>
+                <option value="Intelligence Artificielle" data-i18n="filiere_11">Intelligence Artificielle</option>
+              </optgroup>
+              <optgroup label="Licences Professionnelles" data-i18n-label="filiere_group_lp">
+                <option value="LP FEDE" data-i18n="filiere_12">LP FEDE</option>
+                <option value="LP WES'SUP" data-i18n="filiere_13">LP WES'SUP</option>
+              </optgroup>
+              <optgroup label="Masters" data-i18n-label="filiere_group_master">
+                <option value="MASTER FEDE" data-i18n="filiere_14">MASTER FEDE</option>
+                <option value="MASTER WES'SUP" data-i18n="filiere_15">MASTER WES'SUP</option>
+              </optgroup>
+              <optgroup label="Formation Continue" data-i18n-label="filiere_group_continue">
+                <option value="Formation Continue (Certificat Bureautique, Management, Comptabilité, etc...)" data-i18n="filiere_16">Formation Continue (Certificat Bureautique, Management, Comptabilité, etc...)</option>
+              </optgroup>
+            </select>
+            <p class="error" data-error-for="filiere"></p>
+          </div>
+
+          <div class="field" id="specialiteField" hidden>
+            <label for="specialite"><span data-i18n="label_specialite">Spécialité (si LP ou Master)</span> <span class="optional" data-i18n="optional_text">(facultatif)</span></label>
+            <input type="text" id="specialite" name="specialite" data-i18n-placeholder="placeholder_specialite" placeholder="ex. Marketing Digital">
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label><span data-i18n="label_niveau">Niveau de formation</span> <span class="optional" data-i18n="optional_text">(facultatif)</span></label>
+              <div class="pill-group" data-group="niveau">
+                <label class="pill"><input type="radio" name="niveau" value="1ère Année"><span data-i18n="niveau_1">1ère Année</span></label>
+                <label class="pill"><input type="radio" name="niveau" value="2ème Année"><span data-i18n="niveau_2">2ème Année</span></label>
+                <label class="pill" id="niveau3Pill" hidden><input type="radio" name="niveau" value="3ème Année"><span data-i18n="niveau_3">3ème Année</span></label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="anneeInscription"><span data-i18n="label_anneeInscription">Année d'inscription</span> <span class="req">*</span></label>
+              <input type="text" id="anneeInscription" name="anneeInscription" data-i18n-placeholder="placeholder_anneeInscription" placeholder="ex. 2023-2024">
+              <p class="error" data-error-for="anneeInscription"></p>
+            </div>
+          </div>
         </div>
       </section>
 
       <!-- STEP 3 : FILE UPLOAD -->
-      <section class="panel" data-panel="3" hidden>
+      <section class="panel" data-panel="4" hidden>
         <h2 class="panel-title" data-i18n="step3_heading">Pièce d'identité</h2>
         <p class="panel-sub" data-i18n="step3_sub">Joignez une copie de votre CNI, passeport ou tout autre document d'identité valide.</p>
 
@@ -213,7 +351,7 @@
       </section>
 
       <!-- STEP 4 : REVIEW & SUBMIT -->
-      <section class="panel" data-panel="4" hidden>
+      <section class="panel" data-panel="5" hidden>
         <h2 class="panel-title" data-i18n="step4_heading">Vérifiez et envoyez</h2>
         <p class="panel-sub" data-i18n="step4_sub">Merci de vérifier vos informations avant l'envoi.</p>
 

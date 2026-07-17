@@ -2,23 +2,33 @@
 
 Ce dossier contient un formulaire web autonome (HTML/CSS/JS) qui remplace le
 Google Form, avec un meilleur design et une expérience en plusieurs étapes.
-Les réponses sont enregistrées dans un Google Sheet, et les pièces d'identité
-jointes sont sauvegardées dans un dossier Google Drive — sans obliger vos
-visiteurs à se connecter avec un compte Google.
+Le formulaire couvre **3 établissements** (EELI, EEMCI, EEMSI), choisis à la
+première étape — chacun a son propre Google Sheet et son propre script, donc
+les réponses de chaque école restent séparées. Les pièces d'identité jointes
+sont sauvegardées dans un dossier Google Drive — sans obliger vos visiteurs à
+se connecter avec un compte Google.
 
 Fichiers :
-- `index.html` — la page du formulaire
+- `index.html` — la page du formulaire (les 3 écoles, une seule page)
 - `css/style.css` — le design
-- `js/script.js` — la logique (étapes, validation, envoi)
-- `apps-script/Code.gs` — le code backend à coller dans Google Sheets
+- `js/script.js` — la logique (étapes, validation, envoi, routage par école)
+- `apps-script/Code.gs` — backend **EELI** (Langue, Horaire, Professeur, Année de formation)
+- `apps-script/Code-EEMCI.gs` — backend **EEMCI** (Motif, Filière, Spécialité, Niveau, Année d'inscription)
+- (à venir) `apps-script/Code-EEMSI.gs` — backend **EEMSI**, une fois ses questions connues
 
-## 1. Créer le Google Sheet qui recevra les réponses
+Chaque école a son propre Google Sheet + déploiement Apps Script. Répétez les
+étapes 1 et 2 ci-dessous **une fois par école**, en collant le fichier
+`Code.gs` correspondant à cette école.
+
+## 1. Créer le Google Sheet qui recevra les réponses (par école)
 
 1. Allez sur [sheets.google.com](https://sheets.google.com) et créez une nouvelle feuille de calcul.
-   Nommez-la par exemple **"Demandes d'attestation"**.
+   Nommez-la par exemple **"Demandes d'attestation — EELI"** (ou EEMCI, EEMSI).
 2. Menu **Extensions → Apps Script**.
-3. Supprimez le contenu par défaut du fichier `Code.gs`, puis collez-y
-   tout le contenu du fichier [`apps-script/Code.gs`](apps-script/Code.gs) de ce dossier.
+3. Supprimez le contenu par défaut du fichier `Code.gs`, puis collez-y le
+   contenu du fichier correspondant à cette école :
+   [`apps-script/Code.gs`](apps-script/Code.gs) pour EELI, ou
+   [`apps-script/Code-EEMCI.gs`](apps-script/Code-EEMCI.gs) pour EEMCI.
 4. Cliquez sur l'icône de sauvegarde (💾) en haut.
 
 ## 2. Déployer le script en tant qu'application web
@@ -40,21 +50,22 @@ Fichiers :
 > Vous pouvez tester cette URL directement dans votre navigateur : elle doit
 > afficher `{"result":"ok","message":"Le formulaire est prêt..."}`.
 
-## 3. Connecter le formulaire à votre script
+## 3. Connecter le formulaire à vos scripts
 
 1. Ouvrez [`js/script.js`](js/script.js).
-2. Tout en haut, remplacez :
+2. Tout en haut, complétez l'URL de chaque école déployée :
    ```js
    const CONFIG = {
-     SCRIPT_URL: "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE",
+     SCRIPT_URLS: {
+       "EELI - Centre des Langues": "https://script.google.com/macros/s/XXXXXXXX/exec",
+       "EEMCI": "https://script.google.com/macros/s/YYYYYYYY/exec",
+       "EEMSI": "PASTE_YOUR_EEMSI_APPS_SCRIPT_WEB_APP_URL_HERE",
+     },
      ...
    ```
-   par l'URL copiée à l'étape précédente :
-   ```js
-   const CONFIG = {
-     SCRIPT_URL: "https://script.google.com/macros/s/XXXXXXXX/exec",
-     ...
-   ```
+   Tant qu'une école n'a pas encore d'URL valide (toujours sur
+   `PASTE_YOUR_...`), le formulaire affichera un message clair au lieu
+   d'échouer silencieusement si quelqu'un choisit cette école.
 3. Enregistrez le fichier.
 
 ## 4. Tester en local

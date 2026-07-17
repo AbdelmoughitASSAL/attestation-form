@@ -1,10 +1,15 @@
 // ---------------------------------------------------------------------------
 // CONFIGURATION
-// Paste the URL of your deployed Google Apps Script Web App here.
-// See SETUP.md for step-by-step instructions.
+// Each school has its own Google Sheet, so submissions route to a different
+// Apps Script Web App URL depending on which "école" is selected in step 1.
+// See SETUP.md for step-by-step instructions on deploying each one.
 // ---------------------------------------------------------------------------
 const CONFIG = {
-  SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwbX8vh6z_VkGzo5mov40kDHElg7_7exW9vrXus_bdcq24FyiLnF5bUBxGKFu8OaxIB/exec",
+  SCRIPT_URLS: {
+    "EELI - Centre des Langues": "https://script.google.com/macros/s/AKfycbwbX8vh6z_VkGzo5mov40kDHElg7_7exW9vrXus_bdcq24FyiLnF5bUBxGKFu8OaxIB/exec",
+    "EEMCI": "https://script.google.com/macros/s/AKfycbwXPI7VnE57MOdIhITao7m2OOOhvmMb7Xf4hgo9iVorE9UqTmD8VJzF7_ZihDkjKqom/exec",
+    "EEMSI": "https://script.google.com/macros/s/AKfycbzvTZpRjmTbrNM8-Z7SsBfnWvw6wY_QCNJvBbwSsEW0Bzxq0IfBcifUEzL3-5O75BIw/exec",
+  },
   MAX_FILE_SIZE_MB: 8,
 };
 
@@ -36,6 +41,7 @@ const CONFIG = {
   let selectedFile = null;
 
   const FIELD_LABEL_KEYS = {
+    ecole: "label_ecole",
     nom: "label_nom",
     dateNaissance: "label_dateNaissance",
     lieuNaissance: "label_lieuNaissance",
@@ -46,7 +52,160 @@ const CONFIG = {
     anneeFormation: "label_anneeFormation",
     nomProf: "label_nomProf",
     file: "label_file",
+    motif: "label_motif",
+    filiere: "label_filiere",
+    specialite: "label_specialite",
+    niveau: "label_niveau",
+    anneeInscription: "label_anneeInscription",
   };
+
+  // Which "école" maps to which field-set variant in step 3. EEMCI and EEMSI
+  // share the same "career school" variant (identical structure: Motif,
+  // Filière, Spécialité, Niveau, Année d'inscription) — only the filière
+  // list and niveau option count differ, populated dynamically below.
+  const SCHOOL_VARIANT_BY_ECOLE = {
+    "EELI - Centre des Langues": "EELI - Centre des Langues",
+    EEMCI: "EEMCI",
+    EEMSI: "EEMCI",
+  };
+
+  function getSelectedEcole() {
+    const checked = form.querySelector('[name="ecole"]:checked');
+    return checked ? checked.value : "";
+  }
+
+  function getActiveVariant() {
+    return SCHOOL_VARIANT_BY_ECOLE[getSelectedEcole()] || "EELI - Centre des Langues";
+  }
+
+  // -------------------------------------------------------------------
+  // Career-school (EEMCI/EEMSI) filière + niveau options, per school
+  // -------------------------------------------------------------------
+  const FILIERE_CONFIG_BY_ECOLE = {
+    EEMCI: {
+      niveauOptions: ["1ère Année", "2ème Année"],
+      specialiteTriggers: ["LP FEDE", "LP WES'SUP", "MASTER FEDE", "MASTER WES'SUP"],
+      groups: [
+        {
+          labelKey: "filiere_group_bac2",
+          options: [
+            ["Gestion Informatisée", "filiere_1"],
+            ["Action Commerciale et Marketing", "filiere_2"],
+            ["Réception d'Hôtel", "filiere_3"],
+            ["Gestion des Entreprises", "filiere_4"],
+            ["Commerce International", "filiere_5"],
+            ["Financier Comptable", "filiere_6"],
+            ["Développement Informatique", "filiere_7"],
+            ["Systèmes et Réseaux Informatiques", "filiere_8"],
+            ["Gestion Hôtelière", "filiere_9"],
+            ["Cyber Sécurité", "filiere_10"],
+            ["Intelligence Artificielle", "filiere_11"],
+          ],
+        },
+        {
+          labelKey: "filiere_group_lp",
+          options: [
+            ["LP FEDE", "filiere_12"],
+            ["LP WES'SUP", "filiere_13"],
+          ],
+        },
+        {
+          labelKey: "filiere_group_master",
+          options: [
+            ["MASTER FEDE", "filiere_14"],
+            ["MASTER WES'SUP", "filiere_15"],
+          ],
+        },
+        {
+          labelKey: "filiere_group_continue",
+          options: [
+            ["Formation Continue (Certificat Bureautique, Management, Comptabilité, etc...)", "filiere_16"],
+          ],
+        },
+      ],
+    },
+    EEMSI: {
+      niveauOptions: ["1ère Année", "2ème Année", "3ème Année"],
+      specialiteTriggers: ["LP", "MASTER"],
+      groups: [
+        {
+          labelKey: "filiere_group_sante",
+          options: [
+            ["Aide Soignant", "filiere_s1"],
+            ["Infirmier Auxiliaire", "filiere_s2"],
+            ["Infirmier Polyvalent", "filiere_s3"],
+            ["Sage Femme", "filiere_s4"],
+            ["Kinésithérapeute", "filiere_s5"],
+            ["Anesthésie Réanimation", "filiere_s6"],
+          ],
+        },
+        {
+          labelKey: "filiere_group_autres",
+          options: [
+            ["LP", "filiere_lp_generic"],
+            ["MASTER", "filiere_master_generic"],
+            ["Formation Continue (Certificat Auxiliaire de santé, etc...)", "filiere_fc_sante"],
+          ],
+        },
+      ],
+    },
+  };
+
+  const filiereSelect = document.getElementById("filiere");
+  const specialiteField = document.getElementById("specialiteField");
+  const niveau3Pill = document.getElementById("niveau3Pill");
+  let specialiteTriggers = [];
+
+  function populateFiliereForEcole(ecole) {
+    const config = FILIERE_CONFIG_BY_ECOLE[ecole] || FILIERE_CONFIG_BY_ECOLE.EEMCI;
+    specialiteTriggers = config.specialiteTriggers;
+
+    filiereSelect.innerHTML = "";
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.disabled = true;
+    placeholder.selected = true;
+    placeholder.dataset.i18n = "filiere_placeholder";
+    filiereSelect.appendChild(placeholder);
+
+    config.groups.forEach((group) => {
+      const optgroup = document.createElement("optgroup");
+      optgroup.dataset.i18nLabel = group.labelKey;
+      group.options.forEach(([value, key]) => {
+        const opt = document.createElement("option");
+        opt.value = value;
+        opt.dataset.i18n = key;
+        optgroup.appendChild(opt);
+      });
+      filiereSelect.appendChild(optgroup);
+    });
+
+    niveau3Pill.hidden = !config.niveauOptions.includes("3ème Année");
+    specialiteField.hidden = true;
+
+    applyLanguage(currentLang);
+  }
+
+  function applySchoolVariant() {
+    const active = getActiveVariant();
+    document.querySelectorAll(".school-variant").forEach((el) => {
+      el.hidden = el.dataset.schoolVariant !== active;
+    });
+    if (active === "EEMCI") {
+      populateFiliereForEcole(getSelectedEcole());
+    }
+  }
+
+  form.querySelectorAll('[name="ecole"]').forEach((input) => {
+    input.addEventListener("change", applySchoolVariant);
+  });
+  applySchoolVariant();
+
+  if (filiereSelect) {
+    filiereSelect.addEventListener("change", () => {
+      specialiteField.hidden = !specialiteTriggers.includes(filiereSelect.value);
+    });
+  }
 
   // -------------------------------------------------------------------
   // Populate "Année de formation" dynamically (current + surrounding years)
@@ -113,6 +272,14 @@ const CONFIG = {
     let valid = true;
 
     if (step === 1) {
+      clearError("ecole");
+      if (!form.querySelector('[name="ecole"]:checked')) {
+        setError("ecole", t("err_ecole_required"));
+        valid = false;
+      }
+    }
+
+    if (step === 2) {
       ["nom", "dateNaissance", "lieuNaissance", "telephone"].forEach((name) => {
         const input = form.querySelector(`[name="${name}"]`);
         clearError(name);
@@ -135,7 +302,22 @@ const CONFIG = {
       }
     }
 
-    if (step === 2) {
+    if (step === 3 && getActiveVariant() === "EEMCI") {
+      clearError("typeAttestationEemci");
+      if (!form.querySelector('[name="typeAttestation"]:checked')) {
+        setError("typeAttestationEemci", t("err_typeAttestation_required"));
+        valid = false;
+      }
+
+      ["motif", "filiere", "anneeInscription"].forEach((name) => {
+        const input = form.querySelector(`[name="${name}"]`);
+        clearError(name);
+        if (!input.value.trim()) {
+          setError(name, t("err_required", { field: t(FIELD_LABEL_KEYS[name]) }));
+          valid = false;
+        }
+      });
+    } else if (step === 3) {
       clearError("typeAttestation");
       if (!form.querySelector('[name="typeAttestation"]:checked')) {
         setError("typeAttestation", t("err_typeAttestation_required"));
@@ -158,7 +340,7 @@ const CONFIG = {
       });
     }
 
-    if (step === 3) {
+    if (step === 4) {
       clearError("file");
       if (!selectedFile) {
         setError("file", t("err_file_required"));
@@ -166,7 +348,7 @@ const CONFIG = {
       }
     }
 
-    if (step === 4) {
+    if (step === 5) {
       clearError("certify");
       if (!document.getElementById("certify").checked) {
         setError("certify", t("err_certify_required"));
@@ -285,10 +467,42 @@ const CONFIG = {
   // Radio/select values stay canonical French (see i18n.js), so map them
   // back to a translation key to display them in the visitor's language.
   // -------------------------------------------------------------------
+  const ECOLE_KEY_BY_VALUE = {
+    "EELI - Centre des Langues": "opt_eeli",
+    EEMCI: "opt_eemci",
+    EEMSI: "opt_eemsi",
+  };
+
   const ATTESTATION_KEY_BY_VALUE = {
     "Attestation d'inscription": "opt_inscription",
     "Attestation de scolarité": "opt_scolarite",
     "Attestation de fin de formation": "opt_finFormation",
+    "Attestation homologuée": "opt_homologuee",
+    "Attestation de réussite": "opt_reussite",
+  };
+
+  const FILIERE_KEY_BY_VALUE = {
+    "Gestion Informatisée": "filiere_1",
+    "Action Commerciale et Marketing": "filiere_2",
+    "Réception d'Hôtel": "filiere_3",
+    "Gestion des Entreprises": "filiere_4",
+    "Commerce International": "filiere_5",
+    "Financier Comptable": "filiere_6",
+    "Développement Informatique": "filiere_7",
+    "Systèmes et Réseaux Informatiques": "filiere_8",
+    "Gestion Hôtelière": "filiere_9",
+    "Cyber Sécurité": "filiere_10",
+    "Intelligence Artificielle": "filiere_11",
+    "LP FEDE": "filiere_12",
+    "LP WES'SUP": "filiere_13",
+    "MASTER FEDE": "filiere_14",
+    "MASTER WES'SUP": "filiere_15",
+    "Formation Continue (Certificat Bureautique, Management, Comptabilité, etc...)": "filiere_16",
+  };
+
+  const NIVEAU_KEY_BY_VALUE = {
+    "1ère Année": "niveau_1",
+    "2ème Année": "niveau_2",
   };
 
   const LANGUE_KEY_BY_VALUE = {
@@ -321,17 +535,32 @@ const CONFIG = {
     const data = collectFormData();
 
     const rows = [
+      [t("label_ecole"), data.ecole ? t(ECOLE_KEY_BY_VALUE[data.ecole]) : ""],
       [t("label_nom"), data.nom],
       [t("label_dateNaissance"), data.dateNaissance],
       [t("label_lieuNaissance"), data.lieuNaissance],
       [t("label_telephone"), data.telephone],
       [t("label_typeAttestation"), data.typeAttestation ? t(ATTESTATION_KEY_BY_VALUE[data.typeAttestation]) : ""],
-      [t("label_langue"), data.langue ? t(LANGUE_KEY_BY_VALUE[data.langue]) : ""],
-      [t("label_horaire"), data.horaire ? t(HORAIRE_KEY_BY_VALUE[data.horaire]) : ""],
-      [t("label_anneeFormation"), data.anneeFormation],
-      [t("label_nomProf"), data.nomProf || "—"],
-      [t("summary_document"), selectedFile ? selectedFile.name : "—"],
     ];
+
+    if (getActiveVariant() === "EEMCI") {
+      rows.push(
+        [t("label_motif"), data.motif],
+        [t("label_filiere"), data.filiere ? t(FILIERE_KEY_BY_VALUE[data.filiere]) : ""],
+        [t("label_specialite"), data.specialite || "—"],
+        [t("label_niveau"), data.niveau ? t(NIVEAU_KEY_BY_VALUE[data.niveau]) : "—"],
+        [t("label_anneeInscription"), data.anneeInscription]
+      );
+    } else {
+      rows.push(
+        [t("label_langue"), data.langue ? t(LANGUE_KEY_BY_VALUE[data.langue]) : ""],
+        [t("label_horaire"), data.horaire ? t(HORAIRE_KEY_BY_VALUE[data.horaire]) : ""],
+        [t("label_anneeFormation"), data.anneeFormation],
+        [t("label_nomProf"), data.nomProf || "—"]
+      );
+    }
+
+    rows.push([t("summary_document"), selectedFile ? selectedFile.name : "—"]);
 
     summary.innerHTML = rows
       .map(
@@ -350,6 +579,7 @@ const CONFIG = {
   function collectFormData() {
     const fd = new FormData(form);
     return {
+      ecole: fd.get("ecole") || "",
       nom: fd.get("nom")?.trim() || "",
       dateNaissance: fd.get("dateNaissance") || "",
       lieuNaissance: fd.get("lieuNaissance")?.trim() || "",
@@ -359,6 +589,11 @@ const CONFIG = {
       horaire: fd.get("horaire") || "",
       anneeFormation: fd.get("anneeFormation") || "",
       nomProf: fd.get("nomProf")?.trim() || "",
+      motif: fd.get("motif")?.trim() || "",
+      filiere: fd.get("filiere") || "",
+      specialite: fd.get("specialite")?.trim() || "",
+      niveau: fd.get("niveau") || "",
+      anneeInscription: fd.get("anneeInscription")?.trim() || "",
     };
   }
 
@@ -367,9 +602,12 @@ const CONFIG = {
   // -------------------------------------------------------------------
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    if (!validateStep(4)) return;
+    if (!validateStep(totalSteps)) return;
 
-    if (!CONFIG.SCRIPT_URL || CONFIG.SCRIPT_URL.includes("PASTE_YOUR")) {
+    const data = collectFormData();
+    const scriptUrl = CONFIG.SCRIPT_URLS[data.ecole];
+
+    if (!scriptUrl || scriptUrl.includes("PASTE_YOUR")) {
       submitError.textContent = t("submit_not_configured");
       submitError.hidden = false;
       return;
@@ -379,7 +617,6 @@ const CONFIG = {
     setSubmitting(true);
 
     try {
-      const data = collectFormData();
       let fileData = null;
       if (selectedFile) {
         const base64 = await fileToBase64(selectedFile);
@@ -392,7 +629,7 @@ const CONFIG = {
 
       const payload = { ...data, file: fileData };
 
-      const res = await fetch(CONFIG.SCRIPT_URL, {
+      const res = await fetch(scriptUrl, {
         method: "POST",
         // text/plain avoids a CORS preflight against Apps Script
         headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -430,6 +667,8 @@ const CONFIG = {
     dropzoneEmpty.hidden = false;
     dropzoneFile.hidden = true;
     populateYears();
+    applySchoolVariant();
+    if (specialiteField) specialiteField.hidden = true;
     currentStep = 1;
     showStep(currentStep);
 

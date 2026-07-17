@@ -1,6 +1,8 @@
 /**
- * Backend for the "Demande d'attestation" form.
- * Deploy this as a Web App (see SETUP.md) bound to a Google Sheet.
+ * Backend for the "Demande d'attestation" form — EEMCI variant.
+ * Deploy this as a Web App (see SETUP.md) bound to EEMCI's own Google Sheet.
+ * Fields differ from the EELI version (Code.gs): Motif, Filière, Spécialité,
+ * Niveau, Année d'inscription instead of Langue/Horaire/Professeur/Année de formation.
  */
 
 const SHEET_NAME = "Réponses";
@@ -14,10 +16,11 @@ const HEADERS = [
   "Lieu de naissance",
   "Téléphone",
   "Type d'attestation",
-  "Langue",
-  "Horaire du cours",
-  "Année de formation",
-  "Nom du professeur",
+  "Motif de la demande",
+  "Filière",
+  "Spécialité",
+  "Niveau de formation",
+  "Année d'inscription",
   "Pièce jointe",
 ];
 
@@ -39,10 +42,11 @@ function doPost(e) {
       data.lieuNaissance || "",
       data.telephone || "",
       data.typeAttestation || "",
-      data.langue || "",
-      data.horaire || "",
-      data.anneeFormation || "",
-      data.nomProf || "",
+      data.motif || "",
+      data.filiere || "",
+      data.specialite || "",
+      data.niveau || "",
+      data.anneeInscription || "",
       fileUrl,
     ]);
 
