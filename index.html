@@ -6,7 +6,7 @@
 <title>Demande d'attestation — École Européenne des Langues Internationales</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -17,35 +17,40 @@
     <div class="brand">
       <img class="brand-logo" src="assets/logo.png" alt="Centre Européen des Langues Internationales — Meknès - Dakhla" width="225" height="48">
       <span class="brand-divider" aria-hidden="true"></span>
-      <span class="brand-subtitle">Demande d'attestation</span>
+      <span class="brand-subtitle" data-i18n="brand_subtitle">Demande d'attestation</span>
+    </div>
+    <div class="lang-switch" role="group" aria-label="Langue du formulaire / Form language / لغة الاستمارة">
+      <button type="button" class="lang-btn" data-lang="fr">FR</button>
+      <button type="button" class="lang-btn" data-lang="en">EN</button>
+      <button type="button" class="lang-btn" data-lang="ar">عربي</button>
     </div>
   </header>
 
   <main class="card" role="main">
 
     <div class="card-intro">
-      <span class="eyebrow">Formulaire officiel</span>
-      <h1>Formulaire de demande d'attestation</h1>
-      <p>Remplissez ce formulaire pour demander votre attestation. Les champs marqués <span class="req">*</span> sont obligatoires.</p>
+      <span class="eyebrow" data-i18n="eyebrow">Formulaire officiel</span>
+      <h1 data-i18n="h1_title">Formulaire de demande d'attestation</h1>
+      <p data-i18n-html="intro_text">Remplissez ce formulaire pour demander votre attestation. Les champs marqués <span class="req">*</span> sont obligatoires.</p>
     </div>
 
     <!-- progress -->
     <ol class="steps" id="steps" aria-label="Étapes du formulaire">
       <li class="step active" data-step="1">
         <span class="step-dot">1</span>
-        <span class="step-label">Informations</span>
+        <span class="step-label" data-i18n="step1">Informations</span>
       </li>
       <li class="step" data-step="2">
         <span class="step-dot">2</span>
-        <span class="step-label">Attestation</span>
+        <span class="step-label" data-i18n="step2">Attestation</span>
       </li>
       <li class="step" data-step="3">
         <span class="step-dot">3</span>
-        <span class="step-label">Document</span>
+        <span class="step-label" data-i18n="step3">Document</span>
       </li>
       <li class="step" data-step="4">
         <span class="step-dot">4</span>
-        <span class="step-label">Envoi</span>
+        <span class="step-label" data-i18n="step4">Envoi</span>
       </li>
     </ol>
 
@@ -53,137 +58,137 @@
 
       <!-- STEP 1 : PERSONAL INFO -->
       <section class="panel" data-panel="1">
-        <h2 class="panel-title">Vos informations personnelles</h2>
+        <h2 class="panel-title" data-i18n="step1_heading">Vos informations personnelles</h2>
 
         <div class="field">
-          <label for="nom">Nom et Prénom <span class="req">*</span></label>
-          <input type="text" id="nom" name="nom" placeholder="ex. Fatima Zahra El Amrani" required autocomplete="name">
+          <label for="nom"><span data-i18n="label_nom">Nom et Prénom</span> <span class="req">*</span></label>
+          <input type="text" id="nom" name="nom" data-i18n-placeholder="placeholder_nom" placeholder="ex. Fatima Zahra El Amrani" required autocomplete="name">
           <p class="error" data-error-for="nom"></p>
         </div>
 
         <div class="grid-2">
           <div class="field">
-            <label for="dateNaissance">Date de naissance <span class="req">*</span></label>
+            <label for="dateNaissance"><span data-i18n="label_dateNaissance">Date de naissance</span> <span class="req">*</span></label>
             <input type="date" id="dateNaissance" name="dateNaissance" required>
             <p class="error" data-error-for="dateNaissance"></p>
           </div>
 
           <div class="field">
-            <label for="lieuNaissance">Lieu de naissance <span class="req">*</span></label>
-            <input type="text" id="lieuNaissance" name="lieuNaissance" placeholder="ex. Meknès" required>
+            <label for="lieuNaissance"><span data-i18n="label_lieuNaissance">Lieu de naissance</span> <span class="req">*</span></label>
+            <input type="text" id="lieuNaissance" name="lieuNaissance" data-i18n-placeholder="placeholder_lieuNaissance" placeholder="ex. Meknès" required>
             <p class="error" data-error-for="lieuNaissance"></p>
           </div>
         </div>
 
         <div class="field">
-          <label for="telephone">Numéro de téléphone <span class="req">*</span></label>
-          <input type="tel" id="telephone" name="telephone" placeholder="ex. 06 12 34 56 78" required autocomplete="tel">
+          <label for="telephone"><span data-i18n="label_telephone">Numéro de téléphone</span> <span class="req">*</span></label>
+          <input type="tel" id="telephone" name="telephone" data-i18n-placeholder="placeholder_telephone" placeholder="ex. 06 12 34 56 78" required autocomplete="tel">
           <p class="error" data-error-for="telephone"></p>
         </div>
       </section>
 
       <!-- STEP 2 : ATTESTATION DETAILS -->
       <section class="panel" data-panel="2" hidden>
-        <h2 class="panel-title">Détails de l'attestation</h2>
+        <h2 class="panel-title" data-i18n="step2_heading">Détails de l'attestation</h2>
 
         <div class="field">
-          <label>Type d'attestation <span class="req">*</span></label>
+          <label><span data-i18n="label_typeAttestation">Type d'attestation</span> <span class="req">*</span></label>
           <div class="option-cards" data-group="typeAttestation">
             <label class="option-card">
               <input type="radio" name="typeAttestation" value="Attestation d'inscription" required>
               <span class="option-card-icon">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 12v6M9 15h6"/></svg>
               </span>
-              <span class="option-card-text">Attestation d'inscription</span>
+              <span class="option-card-text" data-i18n="opt_inscription">Attestation d'inscription</span>
             </label>
             <label class="option-card">
               <input type="radio" name="typeAttestation" value="Attestation de scolarité" required>
               <span class="option-card-icon">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9 15 2 2 4-4"/></svg>
               </span>
-              <span class="option-card-text">Attestation de scolarité</span>
+              <span class="option-card-text" data-i18n="opt_scolarite">Attestation de scolarité</span>
             </label>
             <label class="option-card">
               <input type="radio" name="typeAttestation" value="Attestation de fin de formation" required>
               <span class="option-card-icon">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><circle cx="12" cy="14" r="2.4"/><path d="m10.3 16 -.5 3.2 2.2-1.2 2.2 1.2-.5-3.2"/></svg>
               </span>
-              <span class="option-card-text">Attestation de fin de formation</span>
+              <span class="option-card-text" data-i18n="opt_finFormation">Attestation de fin de formation</span>
             </label>
           </div>
           <p class="error" data-error-for="typeAttestation"></p>
         </div>
 
         <div class="field">
-          <label>Langue <span class="req">*</span></label>
+          <label><span data-i18n="label_langue">Langue</span> <span class="req">*</span></label>
           <div class="pill-group" data-group="langue">
-            <label class="pill"><input type="radio" name="langue" value="Allemande" required><span>Allemande</span></label>
-            <label class="pill"><input type="radio" name="langue" value="Anglaise" required><span>Anglaise</span></label>
-            <label class="pill"><input type="radio" name="langue" value="Espagnole" required><span>Espagnole</span></label>
-            <label class="pill"><input type="radio" name="langue" value="Française" required><span>Française</span></label>
-            <label class="pill"><input type="radio" name="langue" value="Italienne" required><span>Italienne</span></label>
-            <label class="pill"><input type="radio" name="langue" value="Néerlandaise" required><span>Néerlandaise</span></label>
-            <label class="pill"><input type="radio" name="langue" value="Arabe" required><span>Arabe</span></label>
+            <label class="pill"><input type="radio" name="langue" value="Allemande" required><span data-i18n="lang_allemande">Allemande</span></label>
+            <label class="pill"><input type="radio" name="langue" value="Anglaise" required><span data-i18n="lang_anglaise">Anglaise</span></label>
+            <label class="pill"><input type="radio" name="langue" value="Espagnole" required><span data-i18n="lang_espagnole">Espagnole</span></label>
+            <label class="pill"><input type="radio" name="langue" value="Française" required><span data-i18n="lang_francaise">Française</span></label>
+            <label class="pill"><input type="radio" name="langue" value="Italienne" required><span data-i18n="lang_italienne">Italienne</span></label>
+            <label class="pill"><input type="radio" name="langue" value="Néerlandaise" required><span data-i18n="lang_neerlandaise">Néerlandaise</span></label>
+            <label class="pill"><input type="radio" name="langue" value="Arabe" required><span data-i18n="lang_arabe">Arabe</span></label>
           </div>
           <p class="error" data-error-for="langue"></p>
         </div>
 
         <div class="grid-2">
           <div class="field">
-            <label for="horaire">Horaire du cours <span class="req">*</span></label>
+            <label for="horaire"><span data-i18n="label_horaire">Horaire du cours</span> <span class="req">*</span></label>
             <select id="horaire" name="horaire" required>
-              <option value="" disabled selected>Choisir un horaire…</option>
-              <optgroup label="Matin">
-                <option value="Matin 8h30-10h30">Matin 8h30-10h30</option>
-                <option value="Cours Accélérés 9h30-12h30">Cours Accélérés 9h30-12h30</option>
-                <option value="Matin 10h30-12h30">Matin 10h30-12h30</option>
+              <option value="" disabled selected data-i18n="horaire_placeholder">Choisir un horaire…</option>
+              <optgroup label="Matin" data-i18n-label="horaire_group_matin">
+                <option value="Matin 8h30-10h30" data-i18n="horaire_1">Matin 8h30-10h30</option>
+                <option value="Cours Accélérés 9h30-12h30" data-i18n="horaire_2">Cours Accélérés 9h30-12h30</option>
+                <option value="Matin 10h30-12h30" data-i18n="horaire_3">Matin 10h30-12h30</option>
               </optgroup>
-              <optgroup label="Après-midi">
-                <option value="Ap Midi 14h30-16h30">Ap Midi 14h30-16h30</option>
-                <option value="Cours Accélérés 15h-18h">Cours Accélérés 15h-18h</option>
-                <option value="Ap Midi 16h30-18h30">Ap Midi 16h30-18h30</option>
-                <option value="Cours du jour 16h30-18h">Cours du jour 16h30-18h</option>
+              <optgroup label="Après-midi" data-i18n-label="horaire_group_apresmidi">
+                <option value="Ap Midi 14h30-16h30" data-i18n="horaire_4">Ap Midi 14h30-16h30</option>
+                <option value="Cours Accélérés 15h-18h" data-i18n="horaire_5">Cours Accélérés 15h-18h</option>
+                <option value="Ap Midi 16h30-18h30" data-i18n="horaire_6">Ap Midi 16h30-18h30</option>
+                <option value="Cours du jour 16h30-18h" data-i18n="horaire_7">Cours du jour 16h30-18h</option>
               </optgroup>
-              <optgroup label="Soir">
-                <option value="Cours Accélérés 18h-21h">Cours Accélérés 18h-21h</option>
-                <option value="Cours du soir 18h30-20h">Cours du soir 18h30-20h</option>
-                <option value="Soir 19h-21h">Soir 19h-21h</option>
+              <optgroup label="Soir" data-i18n-label="horaire_group_soir">
+                <option value="Cours Accélérés 18h-21h" data-i18n="horaire_8">Cours Accélérés 18h-21h</option>
+                <option value="Cours du soir 18h30-20h" data-i18n="horaire_9">Cours du soir 18h30-20h</option>
+                <option value="Soir 19h-21h" data-i18n="horaire_10">Soir 19h-21h</option>
               </optgroup>
-              <optgroup label="Week-end">
-                <option value="Samedi Ap Midi 15h-18h">Samedi Ap Midi 15h-18h</option>
-                <option value="Dimanche Matin 10h-13h">Dimanche Matin 10h-13h</option>
+              <optgroup label="Week-end" data-i18n-label="horaire_group_weekend">
+                <option value="Samedi Ap Midi 15h-18h" data-i18n="horaire_11">Samedi Ap Midi 15h-18h</option>
+                <option value="Dimanche Matin 10h-13h" data-i18n="horaire_12">Dimanche Matin 10h-13h</option>
               </optgroup>
             </select>
             <p class="error" data-error-for="horaire"></p>
           </div>
 
           <div class="field">
-            <label for="anneeFormation">Année de formation <span class="req">*</span></label>
+            <label for="anneeFormation"><span data-i18n="label_anneeFormation">Année de formation</span> <span class="req">*</span></label>
             <select id="anneeFormation" name="anneeFormation" required>
-              <option value="" disabled selected>Choisir une année…</option>
+              <option value="" disabled selected data-i18n="annee_placeholder">Choisir une année…</option>
             </select>
             <p class="error" data-error-for="anneeFormation"></p>
           </div>
         </div>
 
         <div class="field">
-          <label for="nomProf">Nom du professeur <span class="optional">(facultatif)</span></label>
-          <input type="text" id="nomProf" name="nomProf" placeholder="ex. M. Bennani">
+          <label for="nomProf"><span data-i18n="label_nomProf">Nom du professeur</span> <span class="optional" data-i18n="optional_text">(facultatif)</span></label>
+          <input type="text" id="nomProf" name="nomProf" data-i18n-placeholder="placeholder_nomProf" placeholder="ex. M. Bennani">
         </div>
       </section>
 
       <!-- STEP 3 : FILE UPLOAD -->
       <section class="panel" data-panel="3" hidden>
-        <h2 class="panel-title">Pièce d'identité</h2>
-        <p class="panel-sub">Joignez une copie de votre CNI, passeport ou tout autre document d'identité valide.</p>
+        <h2 class="panel-title" data-i18n="step3_heading">Pièce d'identité</h2>
+        <p class="panel-sub" data-i18n="step3_sub">Joignez une copie de votre CNI, passeport ou tout autre document d'identité valide.</p>
 
         <div class="field">
           <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-describedby="dropzoneHint">
             <input type="file" id="fileInput" name="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" hidden>
             <div class="dropzone-empty" id="dropzoneEmpty">
               <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 16V4M12 4l-4 4M12 4l4 4"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
-              <p><strong>Cliquez pour importer</strong> ou glissez-déposez un fichier</p>
-              <p id="dropzoneHint" class="dropzone-hint">PDF, Word ou image — 8 Mo max.</p>
+              <p data-i18n-html="dropzone_line"><strong>Cliquez pour importer</strong> ou glissez-déposez un fichier</p>
+              <p id="dropzoneHint" class="dropzone-hint" data-i18n="dropzone_hint">PDF, Word ou image — 8 Mo max.</p>
             </div>
             <div class="dropzone-file" id="dropzoneFile" hidden>
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
@@ -191,7 +196,7 @@
                 <span id="fileName" class="file-name"></span>
                 <span id="fileSize" class="file-size"></span>
               </div>
-              <button type="button" id="removeFile" class="btn-icon" aria-label="Supprimer le fichier">
+              <button type="button" id="removeFile" class="btn-icon" data-i18n-aria-label="remove_file_aria" aria-label="Supprimer le fichier">
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 6 6 18M6 6l12 12"/></svg>
               </button>
             </div>
@@ -202,15 +207,15 @@
 
       <!-- STEP 4 : REVIEW & SUBMIT -->
       <section class="panel" data-panel="4" hidden>
-        <h2 class="panel-title">Vérifiez et envoyez</h2>
-        <p class="panel-sub">Merci de vérifier vos informations avant l'envoi.</p>
+        <h2 class="panel-title" data-i18n="step4_heading">Vérifiez et envoyez</h2>
+        <p class="panel-sub" data-i18n="step4_sub">Merci de vérifier vos informations avant l'envoi.</p>
 
         <dl class="summary" id="summary"></dl>
 
         <div class="field checkbox-field">
           <label class="checkbox">
             <input type="checkbox" id="certify" name="certify" required>
-            <span>J'atteste que les informations fournies ci-dessus sont exactes. <span class="req">*</span></span>
+            <span data-i18n-html="checkbox_certify">J'atteste que les informations fournies ci-dessus sont exactes. <span class="req">*</span></span>
           </label>
           <p class="error" data-error-for="certify"></p>
         </div>
@@ -220,10 +225,10 @@
 
       <!-- NAV -->
       <div class="nav-buttons">
-        <button type="button" class="btn btn-ghost" id="prevBtn" hidden>Précédent</button>
-        <button type="button" class="btn btn-primary" id="nextBtn">Suivant</button>
+        <button type="button" class="btn btn-ghost" id="prevBtn" data-i18n="btn_prev" hidden>Précédent</button>
+        <button type="button" class="btn btn-primary" id="nextBtn" data-i18n="btn_next">Suivant</button>
         <button type="submit" class="btn btn-primary" id="submitBtn" hidden>
-          <span id="submitLabel">Envoyer la demande</span>
+          <span id="submitLabel" data-i18n="btn_submit">Envoyer la demande</span>
           <span id="submitSpinner" class="spinner" hidden></span>
         </button>
       </div>
@@ -235,19 +240,20 @@
       <div class="success-icon">
         <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>
       </div>
-      <h2>Demande envoyée avec succès</h2>
-      <p>Votre demande d'attestation a bien été enregistrée. Vous serez contacté(e) au numéro fourni dès qu'elle sera prête.</p>
-      <button type="button" class="btn btn-secondary" id="newRequestBtn">Faire une nouvelle demande</button>
+      <h2 data-i18n="success_heading">Demande envoyée avec succès</h2>
+      <p data-i18n="success_text">Votre demande d'attestation a bien été enregistrée. Vous serez contacté(e) au numéro fourni dès qu'elle sera prête.</p>
+      <button type="button" class="btn btn-secondary" id="newRequestBtn" data-i18n="btn_newRequest">Faire une nouvelle demande</button>
     </div>
 
   </main>
 
   <footer class="page-footer">
-    <p>École Européenne des Langues Internationales — Formulaire sécurisé</p>
+    <p data-i18n="footer_text">École Européenne des Langues Internationales — Formulaire sécurisé</p>
   </footer>
 
 </div>
 
+<script src="js/i18n.js"></script>
 <script src="js/script.js"></script>
 </body>
 </html>

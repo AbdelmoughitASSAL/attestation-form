@@ -35,17 +35,17 @@ const CONFIG = {
   const totalSteps = panels.length;
   let selectedFile = null;
 
-  const FIELD_LABELS = {
-    nom: "Nom et Prénom",
-    dateNaissance: "Date de naissance",
-    lieuNaissance: "Lieu de naissance",
-    telephone: "Téléphone",
-    typeAttestation: "Type d'attestation",
-    langue: "Langue",
-    horaire: "Horaire du cours",
-    anneeFormation: "Année de formation",
-    nomProf: "Nom du professeur",
-    file: "Pièce d'identité",
+  const FIELD_LABEL_KEYS = {
+    nom: "label_nom",
+    dateNaissance: "label_dateNaissance",
+    lieuNaissance: "label_lieuNaissance",
+    telephone: "label_telephone",
+    typeAttestation: "label_typeAttestation",
+    langue: "label_langue",
+    horaire: "label_horaire",
+    anneeFormation: "label_anneeFormation",
+    nomProf: "label_nomProf",
+    file: "label_file",
   };
 
   // -------------------------------------------------------------------
@@ -117,20 +117,20 @@ const CONFIG = {
         const input = form.querySelector(`[name="${name}"]`);
         clearError(name);
         if (!input.value.trim()) {
-          setError(name, `${FIELD_LABELS[name]} est requis.`);
+          setError(name, t("err_required", { field: t(FIELD_LABEL_KEYS[name]) }));
           valid = false;
         }
       });
 
       const phoneInput = form.querySelector('[name="telephone"]');
       if (phoneInput.value.trim() && !/^[0-9+()\s.-]{6,}$/.test(phoneInput.value.trim())) {
-        setError("telephone", "Veuillez saisir un numéro de téléphone valide.");
+        setError("telephone", t("err_phone_invalid"));
         valid = false;
       }
 
       const dobInput = form.querySelector('[name="dateNaissance"]');
       if (dobInput.value && new Date(dobInput.value) > new Date()) {
-        setError("dateNaissance", "La date de naissance ne peut pas être dans le futur.");
+        setError("dateNaissance", t("err_dob_future"));
         valid = false;
       }
     }
@@ -138,13 +138,13 @@ const CONFIG = {
     if (step === 2) {
       clearError("typeAttestation");
       if (!form.querySelector('[name="typeAttestation"]:checked')) {
-        setError("typeAttestation", "Veuillez choisir un type d'attestation.");
+        setError("typeAttestation", t("err_typeAttestation_required"));
         valid = false;
       }
 
       clearError("langue");
       if (!form.querySelector('[name="langue"]:checked')) {
-        setError("langue", "Veuillez choisir une langue.");
+        setError("langue", t("err_langue_required"));
         valid = false;
       }
 
@@ -152,7 +152,7 @@ const CONFIG = {
         const input = form.querySelector(`[name="${name}"]`);
         clearError(name);
         if (!input.value) {
-          setError(name, `${FIELD_LABELS[name]} est requis.`);
+          setError(name, t("err_required", { field: t(FIELD_LABEL_KEYS[name]) }));
           valid = false;
         }
       });
@@ -161,7 +161,7 @@ const CONFIG = {
     if (step === 3) {
       clearError("file");
       if (!selectedFile) {
-        setError("file", "Veuillez joindre un document d'identité.");
+        setError("file", t("err_file_required"));
         valid = false;
       }
     }
@@ -169,7 +169,7 @@ const CONFIG = {
     if (step === 4) {
       clearError("certify");
       if (!document.getElementById("certify").checked) {
-        setError("certify", "Veuillez confirmer l'exactitude des informations.");
+        setError("certify", t("err_certify_required"));
         valid = false;
       }
     }
@@ -215,13 +215,13 @@ const CONFIG = {
     const allowed = [".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"];
     const ext = "." + file.name.split(".").pop().toLowerCase();
     if (!allowed.includes(ext)) {
-      setError("file", "Format non pris en charge. Utilisez PDF, Word ou image.");
+      setError("file", t("err_file_type"));
       return;
     }
 
     const maxBytes = CONFIG.MAX_FILE_SIZE_MB * 1024 * 1024;
     if (file.size > maxBytes) {
-      setError("file", `Le fichier dépasse la taille maximale de ${CONFIG.MAX_FILE_SIZE_MB} Mo.`);
+      setError("file", t("err_file_size", { max: CONFIG.MAX_FILE_SIZE_MB }));
       return;
     }
 
@@ -282,22 +282,55 @@ const CONFIG = {
 
   // -------------------------------------------------------------------
   // Review summary
+  // Radio/select values stay canonical French (see i18n.js), so map them
+  // back to a translation key to display them in the visitor's language.
   // -------------------------------------------------------------------
+  const ATTESTATION_KEY_BY_VALUE = {
+    "Attestation d'inscription": "opt_inscription",
+    "Attestation de scolarité": "opt_scolarite",
+    "Attestation de fin de formation": "opt_finFormation",
+  };
+
+  const LANGUE_KEY_BY_VALUE = {
+    Allemande: "lang_allemande",
+    Anglaise: "lang_anglaise",
+    Espagnole: "lang_espagnole",
+    Française: "lang_francaise",
+    Italienne: "lang_italienne",
+    Néerlandaise: "lang_neerlandaise",
+    Arabe: "lang_arabe",
+  };
+
+  const HORAIRE_KEY_BY_VALUE = {
+    "Matin 8h30-10h30": "horaire_1",
+    "Cours Accélérés 9h30-12h30": "horaire_2",
+    "Matin 10h30-12h30": "horaire_3",
+    "Ap Midi 14h30-16h30": "horaire_4",
+    "Cours Accélérés 15h-18h": "horaire_5",
+    "Ap Midi 16h30-18h30": "horaire_6",
+    "Cours du jour 16h30-18h": "horaire_7",
+    "Cours Accélérés 18h-21h": "horaire_8",
+    "Cours du soir 18h30-20h": "horaire_9",
+    "Soir 19h-21h": "horaire_10",
+    "Samedi Ap Midi 15h-18h": "horaire_11",
+    "Dimanche Matin 10h-13h": "horaire_12",
+  };
+
   function renderSummary() {
     const summary = document.getElementById("summary");
     const data = collectFormData();
 
     const rows = [
-      ["Nom et Prénom", data.nom],
-      ["Date de naissance", data.dateNaissance],
-      ["Lieu de naissance", data.lieuNaissance],
-      ["Téléphone", data.telephone],
-      ["Type d'attestation", data.typeAttestation],
-      ["Langue", data.langue],
-      ["Horaire du cours", data.horaire],
-      ["Année de formation", data.anneeFormation],
-      ["Nom du professeur", data.nomProf || "—"],
-      ["Document joint", selectedFile ? selectedFile.name : "—"],
+      [t("label_nom"), data.nom],
+      [t("label_dateNaissance"), data.dateNaissance],
+      [t("label_lieuNaissance"), data.lieuNaissance],
+      [t("label_telephone"), data.telephone],
+      [t("label_typeAttestation"), data.typeAttestation ? t(ATTESTATION_KEY_BY_VALUE[data.typeAttestation]) : ""],
+      [t("label_langue"), data.langue ? t(LANGUE_KEY_BY_VALUE[data.langue]) : ""],
+      [t("label_horaire"), data.horaire ? t(HORAIRE_KEY_BY_VALUE[data.horaire]) : ""],
+      [t("label_anneeFormation"), data.anneeFormation],
+      [t("label_nomProf"), data.nomProf || "—"],
+      [t("summary_document"), selectedFile ? selectedFile.name : "—"],
     ];
 
     summary.innerHTML = rows
@@ -337,8 +370,7 @@ const CONFIG = {
     if (!validateStep(4)) return;
 
     if (!CONFIG.SCRIPT_URL || CONFIG.SCRIPT_URL.includes("PASTE_YOUR")) {
-      submitError.textContent =
-        "Le formulaire n'est pas encore connecté à Google Sheets. Voir SETUP.md pour configurer CONFIG.SCRIPT_URL dans js/script.js.";
+      submitError.textContent = t("submit_not_configured");
       submitError.hidden = false;
       return;
     }
@@ -377,8 +409,7 @@ const CONFIG = {
       document.querySelector(".card-intro").hidden = true;
       successState.hidden = false;
     } catch (err) {
-      submitError.textContent =
-        "Une erreur est survenue lors de l'envoi. Veuillez réessayer. (" + err.message + ")";
+      submitError.textContent = t("submit_generic_error") + " (" + err.message + ")";
       submitError.hidden = false;
     } finally {
       setSubmitting(false);
@@ -388,7 +419,7 @@ const CONFIG = {
   function setSubmitting(isSubmitting) {
     submitBtn.disabled = isSubmitting;
     prevBtn.disabled = isSubmitting;
-    submitLabel.textContent = isSubmitting ? "Envoi en cours…" : "Envoyer la demande";
+    submitLabel.textContent = isSubmitting ? t("btn_submitting") : t("btn_submit");
     submitSpinner.hidden = !isSubmitting;
   }
 
@@ -406,6 +437,10 @@ const CONFIG = {
     document.getElementById("steps").hidden = false;
     document.querySelector(".card-intro").hidden = false;
     successState.hidden = true;
+  });
+
+  document.addEventListener("formlanguagechange", () => {
+    if (currentStep === totalSteps) renderSummary();
   });
 
   showStep(currentStep);

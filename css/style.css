@@ -41,10 +41,8 @@ html, body {
 }
 
 body {
-  font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background:
-    radial-gradient(1200px 500px at 50% -10%, var(--primary-light), transparent),
-    var(--bg);
+  font-family: "Plus Jakarta Sans", "Cairo", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
   color: var(--ink);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
@@ -57,12 +55,51 @@ body {
 }
 
 /* Header */
-.topbar { margin-bottom: 24px; }
+.topbar {
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
 
 .brand {
   display: flex;
   align-items: center;
   gap: 14px;
+}
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.lang-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--ink-soft);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 7px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.lang-btn:hover { color: var(--ink); }
+
+.lang-btn.active {
+  background: var(--primary);
+  color: white;
 }
 
 .brand-logo {
@@ -156,7 +193,7 @@ body {
   content: "";
   position: absolute;
   top: 15px;
-  left: -50%;
+  inset-inline-start: -50%;
   width: 100%;
   height: 2px;
   background: var(--border);
@@ -267,6 +304,12 @@ select {
   background-repeat: no-repeat;
   background-position: right 14px center;
   padding-right: 38px;
+}
+
+[dir="rtl"] select {
+  background-position: left 14px center;
+  padding-right: 14px;
+  padding-left: 38px;
 }
 
 input:focus,
@@ -392,7 +435,7 @@ select.invalid {
   display: flex;
   align-items: center;
   gap: 12px;
-  text-align: left;
+  text-align: start;
   color: var(--primary);
 }
 
@@ -450,7 +493,7 @@ select.invalid {
 .summary-row:nth-child(even) { background: var(--surface-soft); }
 
 .summary-row dt { color: var(--ink-soft); font-weight: 500; }
-.summary-row dd { margin: 0; font-weight: 700; text-align: right; }
+.summary-row dd { margin: 0; font-weight: 700; text-align: end; }
 
 .checkbox-field { margin-top: 4px; }
 
@@ -515,7 +558,7 @@ select.invalid {
   background: var(--primary);
   border-color: var(--primary);
   color: white;
-  margin-left: auto;
+  margin-inline-start: auto;
   box-shadow: 0 8px 18px -6px rgba(4, 107, 210, 0.45);
 }
 
