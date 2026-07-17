@@ -64,30 +64,51 @@ le formulaire avec des données de test et envoyez-le. Vérifiez que :
 - Une nouvelle ligne apparaît dans votre Google Sheet (onglet "Réponses").
 - Le fichier joint apparaît dans le dossier Drive **"Attestations - Pièces jointes"**.
 
-## 5. Mettre le formulaire en ligne sur votre site
+## 5. Mettre le formulaire en ligne sur votre propre hébergement (Hostinger)
 
-Ce formulaire est un site statique — il fonctionne sur n'importe quel hébergement.
-Choisissez l'option qui correspond à votre site :
+Votre site tourne sur **Hostinger** — voici comment héberger le formulaire
+directement sur votre propre domaine, sans dépendre de GitHub :
 
-### Option A — Vous avez déjà un hébergement (cPanel/FTP)
-Envoyez tout le contenu de ce dossier (`index.html`, `css/`, `js/`) via FTP ou le
-gestionnaire de fichiers de votre hébergeur, dans le dossier public de votre site
-(souvent `public_html/`), par exemple dans un sous-dossier
-`public_html/attestation/`. Le formulaire sera accessible à
-`https://votre-site.com/attestation/`.
+1. Un fichier **`attestation-form-upload.zip`** a été préparé sur votre Bureau
+   (`~/Desktop/attestation-form-upload.zip`), contenant tous les fichiers
+   nécessaires (`index.html`, `css/`, `js/`).
+2. Connectez-vous à **hPanel** (panneau Hostinger) → **Fichiers → Gestionnaire de fichiers**.
+3. Ouvrez le dossier **`public_html`** (la racine de votre site).
+4. Créez un nouveau dossier, par exemple **`attestation`**.
+5. Entrez dans ce dossier, cliquez sur **Importer des fichiers** (ou glissez-déposez),
+   et envoyez `attestation-form-upload.zip`.
+6. Une fois envoyé, faites un clic droit sur le zip dans le gestionnaire de
+   fichiers → **Extraire**, puis supprimez le fichier `.zip` (plus nécessaire).
+7. Votre formulaire est maintenant en ligne à l'adresse :
+   **`https://centreeuropeen.com/attestation/`**
 
-### Option B — Intégrer le formulaire dans une page existante
+### Mettre à jour la page WordPress existante
+
+Si vous avez déjà créé la page WordPress avec un `<iframe>` pointant vers
+`https://abdelmoughitassal.github.io/attestation-form/`, remplacez simplement
+cette URL par la nouvelle, dans le widget HTML Elementor :
+
+```html
+<iframe id="attestationFormFrame"
+  src="https://centreeuropeen.com/attestation/"
+  style="width:100%;border:none;display:block;"
+  title="Formulaire de demande d'attestation"></iframe>
+```
+
+Tout le reste du snippet (le `<script>` d'auto-redimensionnement) reste identique.
+
+### Mettre à jour le formulaire plus tard
+
+Pour tout changement futur (design, textes, champs), il suffira de renvoyer les
+fichiers modifiés (`index.html`, `css/style.css`, `js/script.js`) dans le même
+dossier `public_html/attestation/` via le gestionnaire de fichiers, en écrasant
+les anciens.
+
+### Alternative — intégrer directement dans une page existante
 Copiez le contenu de la balise `<main class="card">` de `index.html` dans votre
 page actuelle, ajoutez le contenu de `css/style.css` dans une balise `<style>`
 (ou en fichier lié), et le contenu de `js/script.js` en bas de page dans une
 balise `<script>`.
-
-### Option C — Vous n'avez pas encore d'hébergement
-Le plus simple et gratuit :
-1. Créez un compte sur [Netlify](https://app.netlify.com/drop).
-2. Glissez-déposez ce dossier entier sur la page — le site est mis en ligne
-   instantanément avec une URL `https://xxxx.netlify.app`.
-3. Vous pourrez ensuite relier un nom de domaine personnalisé si besoin.
 
 ## Sécurité et confidentialité
 
