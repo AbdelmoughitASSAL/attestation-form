@@ -29,23 +29,11 @@ html, body {
 
 body {
   font-family: "Plus Jakarta Sans", "Cairo", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background: linear-gradient(135deg, #0c3c7c, #2b73c5);
+  background: transparent;
   color: var(--ink);
   min-height: 100vh;
   position: relative;
   -webkit-font-smoothing: antialiased;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: url("https://centreeuropeen.com/wp-content/uploads/2026/02/moroccan-zellij.png");
-  background-repeat: repeat;
-  background-size: 220px;
-  opacity: 0.15;
-  z-index: 0;
-  pointer-events: none;
 }
 
 .page {
