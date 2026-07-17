@@ -1,0 +1,45 @@
+<style>
+body {
+  background: linear-gradient(135deg,#0c3c7c,#2b73c5) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative !important;
+}
+body::before {
+  content: "" !important;
+  position: fixed !important;
+  inset: 0 !important;
+  background-image: url('https://centreeuropeen.com/wp-content/uploads/2026/02/moroccan-zellij.png') !important;
+  background-repeat: repeat !important;
+  background-size: 220px !important;
+  opacity: 0.15 !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+/* Hide site-wide widgets on this page: WhatsApp chat, S'inscrire/Contactez-nous
+   bar, and the scroll-to-top button — keep only the gradient + zellij backdrop */
+#wa,
+#cel-off-canvas-footer,
+#ast-scroll-top {
+  display: none !important;
+}
+#attestationFormFrame {
+  background: transparent !important;
+}
+</style>
+
+<div style="max-width:900px;margin:40px auto;padding:0 16px;position:relative;z-index:1;">
+  <iframe id="attestationFormFrame"
+    src="https://abdelmoughitassal.github.io/attestation-form/"
+    style="width:100%;border:none;display:block;"
+    title="Formulaire de demande d'attestation"></iframe>
+</div>
+<script>
+window.addEventListener('message', function (e) {
+  if (e.origin !== 'https://abdelmoughitassal.github.io') return;
+  if (e.data && e.data.type === 'attestation-form-height') {
+    var frame = document.getElementById('attestationFormFrame');
+    if (frame) frame.style.height = e.data.height + 'px';
+  }
+});
+</script>
