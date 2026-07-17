@@ -1,0 +1,48 @@
+<style>
+body {
+  background: linear-gradient(135deg,#0c3c7c,#2b73c5) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative !important;
+}
+body::before {
+  content: "" !important;
+  position: fixed !important;
+  inset: 0 !important;
+  background-image: url('https://centreeuropeen.com/wp-content/uploads/2026/02/moroccan-zellij.png') !important;
+  background-repeat: repeat !important;
+  background-size: 220px !important;
+  opacity: 0.15 !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+.attestation-wrap {
+  position: relative !important;
+  z-index: 1 !important;
+  max-width: 900px !important;
+  margin: 40px auto !important;
+  padding: 0 16px !important;
+}
+#attestationFormFrame {
+  width: 100% !important;
+  border: none !important;
+  display: block !important;
+  background: transparent !important;
+}
+</style>
+
+<div class="attestation-wrap">
+  <iframe id="attestationFormFrame"
+    src="https://centreeuropeen.com/attestation/"
+    title="Formulaire de demande d'attestation"></iframe>
+</div>
+
+<script>
+window.addEventListener('message', function (e) {
+  if (e.origin !== 'https://centreeuropeen.com') return;
+  if (e.data && e.data.type === 'attestation-form-height') {
+    var frame = document.getElementById('attestationFormFrame');
+    if (frame) frame.style.height = e.data.height + 'px';
+  }
+});
+</script>

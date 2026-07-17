@@ -84,18 +84,67 @@ directement sur votre propre domaine, sans dépendre de GitHub :
 
 ### Mettre à jour la page WordPress existante
 
-Si vous avez déjà créé la page WordPress avec un `<iframe>` pointant vers
-`https://abdelmoughitassal.github.io/attestation-form/`, remplacez simplement
-cette URL par la nouvelle, dans le widget HTML Elementor :
+Le formulaire lui-même n'a plus de fond (transparent) — le dégradé bleu et le
+motif zellij sont appliqués depuis la page WordPress, exactement comme sur
+votre page Google Avis. Remplacez tout le contenu du widget HTML Elementor par
+celui du fichier [`wordpress-embed-snippet.html`](wordpress-embed-snippet.html)
+de ce dossier (aperçu ci-dessous) :
 
 ```html
-<iframe id="attestationFormFrame"
-  src="https://centreeuropeen.com/attestation/"
-  style="width:100%;border:none;display:block;"
-  title="Formulaire de demande d'attestation"></iframe>
+<style>
+body {
+  background: linear-gradient(135deg,#0c3c7c,#2b73c5) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative !important;
+}
+body::before {
+  content: "" !important;
+  position: fixed !important;
+  inset: 0 !important;
+  background-image: url('https://centreeuropeen.com/wp-content/uploads/2026/02/moroccan-zellij.png') !important;
+  background-repeat: repeat !important;
+  background-size: 220px !important;
+  opacity: 0.15 !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+.attestation-wrap {
+  position: relative !important;
+  z-index: 1 !important;
+  max-width: 900px !important;
+  margin: 40px auto !important;
+  padding: 0 16px !important;
+}
+#attestationFormFrame {
+  width: 100% !important;
+  border: none !important;
+  display: block !important;
+  background: transparent !important;
+}
+</style>
+
+<div class="attestation-wrap">
+  <iframe id="attestationFormFrame"
+    src="https://centreeuropeen.com/attestation/"
+    title="Formulaire de demande d'attestation"></iframe>
+</div>
+
+<script>
+window.addEventListener('message', function (e) {
+  if (e.origin !== 'https://centreeuropeen.com') return;
+  if (e.data && e.data.type === 'attestation-form-height') {
+    var frame = document.getElementById('attestationFormFrame');
+    if (frame) frame.style.height = e.data.height + 'px';
+  }
+});
+</script>
 ```
 
-Tout le reste du snippet (le `<script>` d'auto-redimensionnement) reste identique.
+> Si cette page WordPress contient d'autres éléments que le formulaire,
+> n'utilisez pas ce snippet tel quel : le sélecteur `body` s'appliquerait à
+> toute la page. Dans ce cas, gardez la version avec fond intégré (dégradé +
+> motif directement dans le formulaire) au lieu de celle-ci.
 
 ### Mettre à jour le formulaire plus tard
 
