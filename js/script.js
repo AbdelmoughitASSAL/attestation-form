@@ -6,7 +6,7 @@
 // ---------------------------------------------------------------------------
 const CONFIG = {
   SCRIPT_URLS: {
-    "EELI - Centre des Langues": "https://script.google.com/macros/s/AKfycbwbX8vh6z_VkGzo5mov40kDHElg7_7exW9vrXus_bdcq24FyiLnF5bUBxGKFu8OaxIB/exec",
+    "EELI - Centre des Langues": "https://script.google.com/macros/s/AKfycby1LrLkX50pvy3PNvsmmmWwHph5Gl5p4d6Gu5TQ90nCA4aN1caognZkux_RY4nBGs10fw/exec",
     "EEMCI": "https://script.google.com/macros/s/AKfycbwXPI7VnE57MOdIhITao7m2OOOhvmMb7Xf4hgo9iVorE9UqTmD8VJzF7_ZihDkjKqom/exec",
     "EEMSI": "https://script.google.com/macros/s/AKfycbzvTZpRjmTbrNM8-Z7SsBfnWvw6wY_QCNJvBbwSsEW0Bzxq0IfBcifUEzL3-5O75BIw/exec",
   },
