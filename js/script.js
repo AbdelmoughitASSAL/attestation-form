@@ -27,6 +27,14 @@ const CONFIG = {
   const submitError = document.getElementById("submitError");
   const successState = document.getElementById("successState");
   const newRequestBtn = document.getElementById("newRequestBtn");
+  const googleReviewBlock = document.getElementById("googleReviewBlock");
+  const googleReviewLink = document.getElementById("googleReviewLink");
+
+  const REVIEW_LINK_BY_ECOLE = {
+    "EELI - Centre des Langues": "https://g.page/r/CS5x2KPJWuXiEBM/review",
+    EEMCI: "https://g.page/r/Ce4xImjebiA6EBM/review",
+    EEMSI: "https://g.page/r/CUaCuYHXJE18EBM/review",
+  };
 
   const dropzone = document.getElementById("dropzone");
   const fileInput = document.getElementById("fileInput");
@@ -641,6 +649,14 @@ const CONFIG = {
         throw new Error(json.error || "Erreur inconnue");
       }
 
+      const reviewLink = REVIEW_LINK_BY_ECOLE[data.ecole];
+      if (reviewLink) {
+        googleReviewLink.href = reviewLink;
+        googleReviewBlock.hidden = false;
+      } else {
+        googleReviewBlock.hidden = true;
+      }
+
       form.hidden = true;
       document.getElementById("steps").hidden = true;
       document.querySelector(".card-intro").hidden = true;
@@ -676,6 +692,7 @@ const CONFIG = {
     document.getElementById("steps").hidden = false;
     document.querySelector(".card-intro").hidden = false;
     successState.hidden = true;
+    googleReviewBlock.hidden = true;
   });
 
   document.addEventListener("formlanguagechange", () => {
