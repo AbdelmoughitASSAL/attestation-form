@@ -8,7 +8,7 @@ const CONFIG = {
   SCRIPT_URLS: {
     "EELI - Centre des Langues": "https://script.google.com/macros/s/AKfycby1LrLkX50pvy3PNvsmmmWwHph5Gl5p4d6Gu5TQ90nCA4aN1caognZkux_RY4nBGs10fw/exec",
     "EEMCI": "https://script.google.com/macros/s/AKfycbwXPI7VnE57MOdIhITao7m2OOOhvmMb7Xf4hgo9iVorE9UqTmD8VJzF7_ZihDkjKqom/exec",
-    "EEMSI": "https://script.google.com/macros/s/AKfycbzFk8iKJbDtsxuHkfUK4M5grDKVfQla-tfQawBihHW0HXuICYZ6uYyb3C9Vo-yqJYwbNg/exec",
+    "EEMSI": "https://script.google.com/macros/s/AKfycbyVEms31_4G6xn0ZLRzyWwLqXpuITMkjri4DDVeftvoM5SSBswpamJU4SgiygZuAcvFqw/exec",
   },
   MAX_FILE_SIZE_MB: 8,
 };
