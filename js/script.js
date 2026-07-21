@@ -216,21 +216,17 @@ const CONFIG = {
   }
 
   // -------------------------------------------------------------------
-  // Populate "Année de formation" dynamically (current + surrounding years)
+  // Default the "année" fields to the current school year (user can edit)
   // -------------------------------------------------------------------
   function populateYears() {
-    const select = document.getElementById("anneeFormation");
     const now = new Date();
     // school year starts in September; before Sept, we're still in the previous school year
     const startYear = now.getMonth() >= 8 ? now.getFullYear() : now.getFullYear() - 1;
-    for (let offset = -1; offset <= 1; offset++) {
-      const y = startYear + offset;
-      const opt = document.createElement("option");
-      opt.value = `${y}-${y + 1}`;
-      opt.textContent = `${y}-${y + 1}`;
-      if (offset === 0) opt.selected = true;
-      select.appendChild(opt);
-    }
+    const defaultYear = `${startYear}-${startYear + 1}`;
+    ["anneeFormation", "anneeInscription"].forEach((id) => {
+      const input = document.getElementById(id);
+      if (input) input.value = defaultYear;
+    });
   }
   populateYears();
 
@@ -325,6 +321,12 @@ const CONFIG = {
           valid = false;
         }
       });
+
+      const anneeInscriptionInput = form.querySelector('[name="anneeInscription"]');
+      if (anneeInscriptionInput.value.trim() && !/^\d{4}-\d{4}$/.test(anneeInscriptionInput.value.trim())) {
+        setError("anneeInscription", t("err_annee_invalid"));
+        valid = false;
+      }
     } else if (step === 3) {
       clearError("typeAttestation");
       if (!form.querySelector('[name="typeAttestation"]:checked')) {
@@ -341,11 +343,17 @@ const CONFIG = {
       ["horaire", "anneeFormation"].forEach((name) => {
         const input = form.querySelector(`[name="${name}"]`);
         clearError(name);
-        if (!input.value) {
+        if (!input.value.trim()) {
           setError(name, t("err_required", { field: t(FIELD_LABEL_KEYS[name]) }));
           valid = false;
         }
       });
+
+      const anneeInput = form.querySelector('[name="anneeFormation"]');
+      if (anneeInput.value.trim() && !/^\d{4}-\d{4}$/.test(anneeInput.value.trim())) {
+        setError("anneeFormation", t("err_annee_invalid"));
+        valid = false;
+      }
     }
 
     if (step === 4) {
