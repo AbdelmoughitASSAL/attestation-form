@@ -216,6 +216,18 @@ const CONFIG = {
   }
 
   // -------------------------------------------------------------------
+  // Auto-insert the "-" in "Année d'inscription" (e.g. 2023-2024) so
+  // visitors never have to find the dash key on a mobile keyboard.
+  // -------------------------------------------------------------------
+  const anneeInscriptionField = document.getElementById("anneeInscription");
+  if (anneeInscriptionField) {
+    anneeInscriptionField.addEventListener("input", () => {
+      const digits = anneeInscriptionField.value.replace(/\D/g, "").slice(0, 8);
+      anneeInscriptionField.value = digits.length > 4 ? `${digits.slice(0, 4)}-${digits.slice(4)}` : digits;
+    });
+  }
+
+  // -------------------------------------------------------------------
   // Default the "année" fields to the current school year (user can edit)
   // -------------------------------------------------------------------
   function populateYears() {
