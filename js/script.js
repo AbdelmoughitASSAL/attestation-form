@@ -216,16 +216,18 @@ const CONFIG = {
   }
 
   // -------------------------------------------------------------------
-  // Auto-insert the "-" in "Année d'inscription" (e.g. 2023-2024) so
+  // Auto-insert the "-" in year fields (e.g. 2023-2024) — covers EELI's
+  // "Année de formation" and EEMCI/EEMSI's "Année d'inscription" — so
   // visitors never have to find the dash key on a mobile keyboard.
   // -------------------------------------------------------------------
-  const anneeInscriptionField = document.getElementById("anneeInscription");
-  if (anneeInscriptionField) {
-    anneeInscriptionField.addEventListener("input", () => {
-      const digits = anneeInscriptionField.value.replace(/\D/g, "").slice(0, 8);
-      anneeInscriptionField.value = digits.length > 4 ? `${digits.slice(0, 4)}-${digits.slice(4)}` : digits;
+  ["anneeFormation", "anneeInscription"].forEach((id) => {
+    const field = document.getElementById(id);
+    if (!field) return;
+    field.addEventListener("input", () => {
+      const digits = field.value.replace(/\D/g, "").slice(0, 8);
+      field.value = digits.length > 4 ? `${digits.slice(0, 4)}-${digits.slice(4)}` : digits;
     });
-  }
+  });
 
   // -------------------------------------------------------------------
   // Default the "année" fields to the current school year (user can edit)
